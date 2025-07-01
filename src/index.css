@@ -1,0 +1,410 @@
+/* Reset some defaults */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #078585, #038e8e);
+  color: #333;
+}
+
+/* Header styling */
+header {
+  color: white;
+}
+/* Main layout grid */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
+/* Suggestions Section */
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Suggestion Card */
+.suggestion-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.suggestion-card:hover {
+  transform: scale(1.02);
+}
+
+.suggestion-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.suggestion-card-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.suggestion-card-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.suggestion-card-content button {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #078585;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Random Generator Section */
+.generator-section {
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  color: white;
+}
+
+/* Button styling */
+button.generate-btn {
+  background: white;
+  color: #078585;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: background 0.2s ease;
+}
+
+button.generate-btn:hover {
+  background: #a8faef;
+}
+
+/* Prompt Card */
+.prompt-card {
+  background: white;
+  color: #333;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-align: center;
+}
+/* Filter bar styling */
+.filter-bar {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-bar label {
+  color: white;
+  font-weight: 500;
+}
+
+.filter-bar select {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #156129;
+  color: rgb(10, 107, 65);
+  font-size: 14px;
+}
+.generator-section {
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  color: white;
+}
+/* Suggestions */
+.suggestions-title {
+  color: white;
+  margin-bottom: 16px;
+  margin-top: 0px;
+}
+
+.generator-section h3 {
+  margin-bottom: 12px;
+}
+
+/* Share Form */
+.share-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.share-input, .share-file {
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+/* Community Submissions */
+.community-submissions {
+  margin-top: 16px;
+}
+
+.community-submissions h4 {
+  margin-bottom: 8px;
+}
+
+.submission-card {
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.submission-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.submission-prompt {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+
+.single-post-container {
+
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.back-button {
+  background: #eee;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.post-image {
+  width: 100%;
+  display: block;
+}
+
+.post-content {
+  padding: 1rem;
+}
+
+.post-username {
+  margin: 0 0 0.5rem 0;
+  color: #555;
+  font-weight: bold;
+}
+
+.post-prompt {
+  font-size: 1.1rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+}
+/* Share Creation container */
+.share-container {
+  background: rgb(255, 255, 255);
+  border-radius: 8px;
+  padding: 16px;
+  
+  max-width: 100%;
+  margin-bottom: 0px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Flex horizontal form */
+.share-form-horizontal {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Circular avatar */
+.share-avatar .avatar-circle {
+  background: #078585;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* Main input area */
+.share-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input styled like LinkedIn */
+.share-input-linkedin {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  width: auto;
+  max-width: 100%;
+  background-color: rgb(237, 237, 237);
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+/* File input and button row */
+.share-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Share button styled like LinkedIn */
+.share-btn-linkedin {
+  background: #0a66c2;
+  color: white;
+  border: none;
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.share-btn-linkedin:hover {
+  background: #004182;
+}
+
+/* File input */
+.share-file-input {
+  width: 30%;
+  font-size: 10px;
+}
+/* Back Button fixed top-left */
+.back-button-fixed {
+  position: sticky;
+  top: 80px;
+  left: 25px;
+  background: #eee;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  z-index: 1000;
+}
+
+/* Main layout */
+.post-layout {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Left Sidebar */
+.user-sidebar {
+  width: 20%;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+}
+
+.user-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Large avatar */
+.avatar-circle-large {
+  background: #078585;
+  color: white;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 28px;
+  margin: 0 auto 8px auto;
+}
+
+/* Right Content */
+.user-posts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Main post */
+.main-post {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.post-image-large {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.post-content {
+  padding: 1rem;
+}
+
+/* Other posts */
+.other-posts h4 {
+  margin-bottom: 12px;
+}
