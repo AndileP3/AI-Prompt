@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../Header.css"; // Adjust path as needed
+import logo from "../assets/main-logo.png"; // Adjust path as needed
 
 export default function Header({ loggedInUser, setLoggedInUser }) {
   const [showModal, setShowModal] = useState(false);
@@ -100,42 +101,43 @@ export default function Header({ loggedInUser, setLoggedInUser }) {
   return (
     <>
       <header className="header">
-        <h1 className="header-title">ImaginAI</h1>
+        <img src={logo} alt="ImaginAI Logo" className="header-logo" />
+
 
         {loggedInUser ? (
           <div className="profile-container" style={{ position: "relative" }}>
-            <button
-              className="profile-btn"
-              onClick={toggleProfile}
-              aria-label="User Profile"
-            >
-              👤
-            </button>
+        <button
+  className="profile-btn"
+  onClick={toggleProfile}
+  aria-label="User Profile"
+>
+  <div className="profile-avatar-circle">
+    {loggedInUser?.username ? loggedInUser.username[0].toUpperCase() : "U"}
+  </div>
+</button>
 
-            {showProfile && (
-              <div
-                className="profile-dropdown"
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  color: "black",
-                  background: "#fff",
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  marginTop: "5px",
-                  minWidth: "150px",
-                  zIndex: 100,
-                }}
-              >
-                <p>
-                  <strong>{loggedInUser.username || loggedInUser.email}</strong>
-                </p>
-                <button onClick={logout} style={{ marginTop: "10px" }}>
-                  Logout
-                </button>
-              </div>
-            )}
+
+      {showProfile && (
+  <div className="profile-dropdown">
+    <div className="profile-header">
+      <div className="profile-avatar-circle">
+        {loggedInUser?.username ? loggedInUser.username[0].toUpperCase() : "U"}
+      </div>
+      <span className="profile-username">
+        {loggedInUser.username || loggedInUser.email}
+      </span>
+    </div>
+    <div className="profile-actions">
+      <button className="profile-action-btn" disabled>
+        ⚙️ Settings
+      </button>
+      <button className="profile-action-btn" onClick={logout}>
+        🚪 Logout
+      </button>
+    </div>
+  </div>
+)}
+
           </div>
         ) : (
           <button className="login-btn" onClick={openModal}>

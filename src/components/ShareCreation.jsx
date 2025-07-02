@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
+
 export default function ShareCreation({ submissions, setSubmissions, loggedInUser }) {
   const [prompt, setPrompt] = useState("");
   const [file, setFile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -41,7 +43,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
         setSubmissions([{ prompt, image: imageUrl }, ...submissions]);
         setPrompt("");
         setFile(null);
-        e.target.reset();
+        setShowModal(false);
       } else {
         alert("Error: " + (data.message || "Failed to save post"));
       }
@@ -52,39 +54,56 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
 
   return (
     <section className="share-container">
-      <form onSubmit={handleSubmit} className="share-form-horizontal">
-        <div className="share-avatar">
-          {/* You can replace this with user's actual profile image */}
-          <div className="avatar-circle">
-            {loggedInUser?.username ? loggedInUser.username[0].toUpperCase() : "U"}
+      {/* Input area styled like LinkedIn */}
+      <div className="share-input-wrapper" onClick={() => setShowModal(true)}>
+        <div className="avatar-circle">
+          {loggedInUser?.username ? loggedInUser.username[0].toUpperCase() : "U"}
+        </div>
+        <input
+          type="text"
+          placeholder="Start a post"
+          readOnly
+        />
+        <button className="inline-share-button">Share</button>
+      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="share-modal-overlay">
+          <div className="share-modal">
+            <h3>Create a post</h3>
+            <form onSubmit={handleSubmit}>
+              <textarea
+                placeholder="What do you want to talk about?"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                rows={4}
+              />
+          <div className="modal-actions">
+  <label className="modal-file-label">
+    📷 Photo
+    <input
+      type="file"
+      name="image"
+      accept="image/*"
+      onChange={(e) => setFile(e.target.files[0])}
+      style={{ display: "none" }}
+    />
+  </label>
+  <button type="submit" className="modal-post-button">
+    Post
+  </button>
+</div>
+
+            </form>
+            <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
           </div>
         </div>
-        <div className="share-main">
-          <input
-            type="text"
-            name="prompt"
-            placeholder="What's on your mind?"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="share-input-linkedin"
-          />
-          <div className="share-actions">
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={(e) => setFile(e.target.files[0])}
-              className="share-file-input"
-            />
-            <button type="submit" className="share-btn-linkedin">
-              Share
-            </button>
-          </div>
-        </div>
-      </form>
+      )}
+
       {submissions.length > 0 && (
         <div className="community-submissions">
-          <h4>✨Your Post was Submitted</h4>
+          <h4>✨ Your Post was Submitted</h4>
           {submissions.map((s, index) => (
             <div key={index} className="submission-card">
               <img src={s.image} alt={s.prompt} className="submission-image" />

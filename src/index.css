@@ -3,7 +3,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom right, #078585, #038e8e);
+  background: linear-gradient(to bottom right, #f2f2f2, #f2f2f2);
   color: #333;
 }
 
@@ -48,7 +48,7 @@ header {
 
 .suggestion-card img {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -62,6 +62,8 @@ header {
 
 .suggestion-card-content p {
   margin: 0;
+  height: 100%;
+  overflow: hidden;
   font-size: 14px;
   color: #333;
 }
@@ -76,7 +78,7 @@ header {
   text-decoration: underline;
 }
 
-/* Random Generator Section */
+/* Random Generator Section
 .generator-section {
   background: rgba(255,255,255,0.2);
   border-radius: 8px;
@@ -85,7 +87,7 @@ header {
   color: white;
 }
 
-/* Button styling */
+/* Button styling 
 button.generate-btn {
   background: white;
   color: #078585;
@@ -100,7 +102,7 @@ button.generate-btn {
 
 button.generate-btn:hover {
   background: #a8faef;
-}
+/* } */
 
 /* Prompt Card */
 .prompt-card {
@@ -112,7 +114,7 @@ button.generate-btn:hover {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   text-align: center;
 }
-/* Filter bar styling */
+/* Filter bar styling 
 .filter-bar {
   background: rgba(255,255,255,0.2);
   backdrop-filter: blur(4px);
@@ -133,7 +135,7 @@ button.generate-btn:hover {
   border: 1px solid #156129;
   color: rgb(10, 107, 65);
   font-size: 14px;
-}
+/* } */
 .generator-section {
   background: rgba(255,255,255,0.2);
   border-radius: 8px;
@@ -143,7 +145,7 @@ button.generate-btn:hover {
 }
 /* Suggestions */
 .suggestions-title {
-  color: white;
+  color: rgb(49, 49, 49);
   margin-bottom: 16px;
   margin-top: 0px;
 }
@@ -219,7 +221,9 @@ button.generate-btn:hover {
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
+.posts-section{
+  border-top: 2px solid #b7b7b7;
+}
 .post-image {
   width: 100%;
   display: block;
@@ -249,7 +253,6 @@ button.generate-btn:hover {
   background: rgb(255, 255, 255);
   border-radius: 8px;
   padding: 16px;
-  
   max-width: 100%;
   margin-bottom: 0px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -262,53 +265,121 @@ button.generate-btn:hover {
   gap: 10px;
 }
 
-/* Circular avatar */
-.share-avatar .avatar-circle {
+/* Wrapper styling for the LinkedIn-like input */
+.share-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 8px 12px;
+  background: #fff;
+  cursor: pointer;
+  max-width: 100%;
+  margin-bottom: 0px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.share-input-wrapper input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  padding: 8px;
+  min-width: 0;
+  background: transparent;
+}
+
+.inline-share-button {
+  background: #0a66c2;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.inline-share-button:hover {
+  background: #004182;
+}
+
+/* Avatar styling */
+.avatar-circle {
   background: #078585;
   color: white;
-  width: 30px;
-  height: 30px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: 13px;
+  margin-right: 0px;
 }
 
-/* Main input area */
-.share-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Input styled like LinkedIn */
-.share-input-linkedin {
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 10px 16px;
-  font-size: 14px;
-  width: auto;
-  max-width: 100%;
-  background-color: rgb(237, 237, 237);
-  box-sizing: border-box;
-  margin-bottom: 8px;
-}
-
-/* File input and button row */
-.share-actions {
+/* Modal overlay */
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right:0;
+  bottom:0;
+  background: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  z-index: 999;
 }
 
-/* Share button styled like LinkedIn */
-.share-btn-linkedin {
-  background: #0a66c2;
-  color: white;
-  border: none;
-  padding: 6px 13px;
+/* Modal content */
+.share-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+}
+
+.share-modal h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+/* Textarea */
+.share-modal textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px;
+  max-height: 200px;
+  min-height: 200px;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  resize: vertical;
+}
+
+/* Modal actions */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-file-input{
+  min-width: 0px;
+}
+.modal-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef3f8;
+  color: #0a66c2;
+  border: 1px solid #dbe2ea;
+  padding: 6px 12px;
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
@@ -316,15 +387,64 @@ button.generate-btn:hover {
   transition: background 0.2s ease;
 }
 
-.share-btn-linkedin:hover {
+.modal-file-label:hover {
+  background: #dbe9f7;
+}
+
+/* Post button in modal */
+.modal-post-button {
+  background: #0a66c2;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-post-button:hover {
   background: #004182;
 }
 
-/* File input */
-.share-file-input {
-  width: 30%;
-  font-size: 10px;
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 }
+
+/* Submissions styling */
+.community-submissions {
+  margin-top: 20px;
+}
+
+.submission-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.submission-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.submission-prompt {
+  flex: 1;
+  font-size: 14px;
+}
+
 /* Back Button fixed top-left */
 .back-button-fixed {
   position: sticky;
@@ -377,7 +497,50 @@ button.generate-btn:hover {
   margin: 0 auto 8px auto;
 }
 
-/* Right Content */
+/* Main post */
+.main-post {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Always take full container width */
+  max-width: 900px; /* Optional: limit max width if you want */
+}
+
+/* Image always fills width but keeps aspect ratio */
+.post-image-large {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Text content grows vertically as needed */
+.post-content {
+  padding: 1rem;
+  word-wrap: break-word; /* Force break long words */
+  overflow-wrap: anywhere; /* Handle long URLs or unbroken text */
+}
+/* Main layout container */
+.post-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Sidebar styling */
+.user-sidebar {
+  width: 20%;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+}
+
+/* Content area */
 .user-posts {
   flex: 1;
   display: flex;
@@ -385,26 +548,77 @@ button.generate-btn:hover {
   gap: 24px;
 }
 
-/* Main post */
-.main-post {
+/* Back button default */
+.back-button-fixed {
+  position: sticky;
+  top: 80px;
+  left: 25px;
+  background: #eee;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  z-index: 1000;
+}
+
+/* === Responsive adjustments === */
+@media (max-width: 768px) {
+  .post-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .user-sidebar {
+    width: 100%;
+    position: static; /* Remove sticky on small screens */
+  }
+
+  .user-posts {
+    width: 100%;
+  }
+
+  .back-button-fixed {
+    position: static;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}
+
+/* Loading screen container */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* ensure on top */
 }
 
-.post-image-large {
-  width: 100%;
+/* Logo styling */
+.loading-logo {
+  width: 100px;  /* adjust size as needed */
   height: auto;
-  max-height: 400px;
-  object-fit: cover;
+  margin-bottom: 20px;
 }
 
-.post-content {
-  padding: 1rem;
+/* Spinner */
+.loading-spinner {
+  border: 4px solid #f3f3f3;        /* Light grey */
+  border-top: 4px solid #078585;    /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
 }
 
-/* Other posts */
-.other-posts h4 {
-  margin-bottom: 12px;
+/* Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

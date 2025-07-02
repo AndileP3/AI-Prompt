@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { suggestions as staticSuggestions } from "./data/suggestions";
 import SuggestionCard from "./components/SuggestionCard";
 import Header from "./components/Header";
-import FilterBar from "./components/FilterBar";
 import ShareCreation from "./components/ShareCreation";
-import Post from "./components/Post"; // Import Post component
+import Post from "./components/Post";
+import LoadingScreen from "./components/LoadingScreen"; // Import your loading screen
 import "./index.css";
 
 export default function App() {
@@ -14,19 +14,33 @@ export default function App() {
   const [submissions, setSubmissions] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [fetchedSuggestions, setFetchedSuggestions] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
 
-  useEffect(() => {
-    fetch("http://localhost/AI/get_posts.php")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setFetchedSuggestions(data.posts);
-        } else {
-          console.error("Failed to fetch posts:", data.message);
-        }
-      })
-      .catch((err) => console.error("Network error:", err));
-  }, []);
+useEffect(() => {
+  const startTime = Date.now();
+
+  fetch("http://localhost/AI/get_posts.php")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setFetchedSuggestions(data.posts);
+      } else {
+        console.error("Failed to fetch posts:", data.message);
+      }
+    })
+    .catch((err) => console.error("Network error:", err))
+    .finally(() => {
+      const elapsed = Date.now() - startTime;
+      const remaining = 1500 - elapsed; // 2000ms = 2 seconds
+
+      if (remaining > 0) {
+        setTimeout(() => setLoading(false), remaining);
+      } else {
+        setLoading(false);
+      }
+    });
+}, []);
+
 
   const allSuggestions = fetchedSuggestions;
 
@@ -34,6 +48,11 @@ export default function App() {
     selectedCategory === "All"
       ? allSuggestions
       : allSuggestions.filter((s) => s.category === selectedCategory);
+
+  // Show loading screen while fetching
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <BrowserRouter>
@@ -47,35 +66,40 @@ export default function App() {
                 loggedInUser={loggedInUser}
                 setLoggedInUser={setLoggedInUser}
               />
+
+              {/* If you want to re-enable filters, uncomment this */}
+              {/*
               <FilterBar
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
               />
-           <main className="main-content">
-  <ShareCreation
-    submissions={submissions}
-    setSubmissions={setSubmissions}
-    loggedInUser={loggedInUser}
-  />
+              */}
 
-  <section className="posts-section">
-    <h2 className="suggestions-title">✨Posts</h2>
-    <div className="suggestions-grid">
-      {filteredSuggestions.map((s) => (
-        <SuggestionCard
-          key={s.post_id}
-          prompt={s.prompt}
-          image={s.image}
-          postId={s.post_id}
-        />
-      ))}
-    </div>
-  </section>
-</main>
+              <main className="main-content">
+                <ShareCreation
+                  submissions={submissions}
+                  setSubmissions={setSubmissions}
+                  loggedInUser={loggedInUser}
+                />
 
+                <section className="posts-section">
+                  <h2 className="suggestions-title">✨ Posts</h2>
+                  <div className="suggestions-grid">
+                    {filteredSuggestions.map((s) => (
+                      <SuggestionCard
+                        key={s.post_id}
+                        prompt={s.prompt}
+                        image={s.image}
+                        postId={s.post_id}
+                      />
+                    ))}
+                  </div>
+                </section>
+              </main>
             </div>
           }
         />
+
         {/* Single Post Page */}
         <Route path="/post/:id" element={<Post />} />
       </Routes>
