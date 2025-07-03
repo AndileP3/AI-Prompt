@@ -109,6 +109,7 @@ header {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3; /* limit to 3 lines */
+  line-clamp: 3; /* standard property for compatibility */
   overflow: hidden;
   word-break: break-word; /* wrap long words */
 }
