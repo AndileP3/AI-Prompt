@@ -86,12 +86,8 @@ useEffect(() => {
                   <h2 className="suggestions-title">✨ Posts</h2>
                   <div className="suggestions-grid">
                     {filteredSuggestions.map((s) => (
-                      <SuggestionCard
-                        key={s.post_id}
-                        prompt={s.prompt}
-                        image={s.image}
-                        postId={s.post_id}
-                      />
+                   <SuggestionCard key={s.post_id} postId={s.post_id} />
+
                     ))}
                   </div>
                 </section>

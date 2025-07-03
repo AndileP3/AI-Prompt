@@ -27,8 +27,16 @@ header {
 /* Suggestions Section */
 .suggestions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Suggestion Card */
+/* Suggestions Section */
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 /* Suggestion Card */
@@ -46,37 +54,130 @@ header {
   transform: scale(1.02);
 }
 
+/* Image */
 .suggestion-card img {
   width: 100%;
-  height: 100%;
+  height: 220px;
   object-fit: cover;
+  transition: height 0.3s ease;
 }
 
-.suggestion-card-content {
-  padding: 12px;
+.suggestion-card img.image-collapsed {
+  height: 100px; /* Smaller height when expanded */
+}
+
+/* Header: Avatar and Username */
+.suggestion-card-header {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #dfdfdf;
 }
 
-.suggestion-card-content p {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
+/* Avatar */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #078585;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+/* Username */
+.username {
   font-size: 14px;
+  font-weight: 500;
   color: #333;
 }
 
-.suggestion-card-content button {
-  margin-top: 8px;
+/* Message */
+.suggestion-card-message {
+  padding: 10px 12px 5px;
+}
+
+/* Collapsed text: 3 lines, wrapping to container width */
+.suggestion-card-message p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* limit to 3 lines */
+  overflow: hidden;
+  word-break: break-word; /* wrap long words */
+}
+
+/* Expanded text: all lines, no cutoff */
+.suggestion-card-message p.expanded {
+  display: block;
+  overflow: visible;
+  white-space: normal;
+  word-break: break-word;
+}
+
+
+/* See more button */
+.see-more-button {
   background: none;
   border: none;
   color: #078585;
   font-size: 12px;
   cursor: pointer;
-  text-decoration: underline;
+  margin-top: 4px;
+  padding: 0;
 }
+
+/* Image */
+.suggestion-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: height 0.3s ease;
+}
+
+.suggestion-card img.image-collapsed {
+  height: 100px;
+}
+
+
+/* Footer (Like button always at the bottom) */
+.suggestion-card-footer {
+  margin-top: auto; /* Push footer to the bottom */
+  padding: 8px 12px;
+  display: flex;
+}
+
+/* Like Button */
+.like-button {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.like-button .heart {
+  font-size: 18px;
+}
+
+.like-button .like-text {
+  font-size: 10px;
+}
+
+.like-button.liked {
+  color: #e74c3c;
+}
+
 
 /* Random Generator Section
 .generator-section {
@@ -290,7 +391,7 @@ button.generate-btn:hover {
 }
 
 .inline-share-button {
-  background: #0a66c2;
+  background: #078585;
   color: white;
   border: none;
   padding: 6px 14px;
@@ -301,7 +402,7 @@ button.generate-btn:hover {
 }
 
 .inline-share-button:hover {
-  background: #004182;
+  background: #1aa0a0;
 }
 
 /* Avatar styling */
@@ -377,7 +478,7 @@ button.generate-btn:hover {
   align-items: center;
   gap: 6px;
   background: #eef3f8;
-  color: #0a66c2;
+  color: #0e9c7d;
   border: 1px solid #dbe2ea;
   padding: 6px 12px;
   border-radius: 20px;
@@ -388,12 +489,12 @@ button.generate-btn:hover {
 }
 
 .modal-file-label:hover {
-  background: #dbe9f7;
+  background: #97b5ad;
 }
 
 /* Post button in modal */
 .modal-post-button {
-  background: #0a66c2;
+  background: #078585;
   color: white;
   border: none;
   padding: 6px 16px;
@@ -404,7 +505,7 @@ button.generate-btn:hover {
 }
 
 .modal-post-button:hover {
-  background: #004182;
+  background: #1aa0a0;
 }
 
 /* Close button */

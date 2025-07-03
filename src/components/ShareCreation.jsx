@@ -74,14 +74,14 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
             <h3>Create a post</h3>
             <form onSubmit={handleSubmit}>
               <textarea
-                placeholder="What do you want to talk about?"
+                placeholder="What AI work do you want to share?"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={4}
               />
           <div className="modal-actions">
   <label className="modal-file-label">
-    📷 Photo
+    🖼️ Photo
     <input
       type="file"
       name="image"
