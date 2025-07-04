@@ -6,19 +6,49 @@ export default function SuggestionCard({ postId }) {
   const [post, setPost] = useState(null);
   const [liked, setLiked] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [timeAgo, setTimeAgo] = useState("");
 
-  useEffect(() => {
-    fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setPost(data.post);
+ useEffect(() => {
+  fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setPost(data.post);
+
+        const createdAt = new Date(data.post.date);
+        const now = new Date();
+        const diffMs = now - createdAt;
+
+        const totalMinutes = Math.floor(diffMs / (1000 * 60));
+        const minutes = totalMinutes % 60;
+        const totalHours = Math.floor(totalMinutes / 60);
+        const hours = totalHours % 24;
+        const days = Math.floor(totalHours / 24);
+
+        let timeStr = "";
+
+        if (days > 0) {
+          timeStr += `${days}d`;
+          if (hours > 0) {
+            timeStr += ` ${hours}h`;
+          }
+        } else if (totalHours > 0) {
+          timeStr += `${totalHours}h`;
+          if (minutes > 0) {
+            timeStr += ` ${minutes}m`;
+          }
         } else {
-          console.error("Failed to fetch post:", data.message);
+          timeStr += `${minutes}m`;
         }
-      })
-      .catch((err) => console.error("Network error:", err));
-  }, [postId]);
+
+        setTimeAgo(timeStr);
+      } else {
+        console.error("Failed to fetch post:", data.message);
+      }
+    })
+    .catch((err) => console.error("Network error:", err));
+}, [postId]);
+
 
   if (!post) {
     return (
@@ -38,10 +68,11 @@ export default function SuggestionCard({ postId }) {
       style={{ cursor: "pointer" }}
       onClick={() => navigate(`/post/${postId}`)}
     >
-      {/* Top: Avatar and Username */}
+      {/* Top: Avatar, Username, Time */}
       <div className="suggestion-card-header">
         <div className="avatar">{username.charAt(0).toUpperCase()}</div>
         <span className="username">{username}</span>
+        <span className="time-ago">{timeAgo}</span>
       </div>
 
       {/* Message */}

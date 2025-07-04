@@ -178,6 +178,19 @@ header {
 .like-button.liked {
   color: #e74c3c;
 }
+/* Top right time ago */
+.suggestion-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* push time to right */
+  padding: 8px 12px;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.time-ago {
+  font-size: 12px;
+  color: #999;
+}
 
 
 /* Random Generator Section
