@@ -25,6 +25,8 @@ header {
   }
 }
 /* Suggestions Section */
+/* Suggestion Card (existing styles) */
+/* Suggestions Section */
 .suggestions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -50,6 +52,7 @@ header {
   transition: transform 0.2s ease;
 }
 
+
 .suggestion-card:hover {
   transform: scale(1.02);
 }
@@ -61,20 +64,18 @@ header {
   object-fit: cover;
   transition: height 0.3s ease;
 }
-
 .suggestion-card img.image-collapsed {
-  height: 100px; /* Smaller height when expanded */
+  height: 100px;
 }
 
-/* Header: Avatar and Username */
+/* Header */
 .suggestion-card-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 8px 12px;
   border-bottom: 1px solid #dfdfdf;
 }
-
-/* Avatar */
 .avatar {
   width: 32px;
   height: 32px;
@@ -88,42 +89,36 @@ header {
   justify-content: center;
   margin-right: 8px;
 }
-
-/* Username */
 .username {
   font-size: 14px;
   font-weight: 500;
   color: #333;
+}
+.time-ago {
+  font-size: 12px;
+  color: #999;
 }
 
 /* Message */
 .suggestion-card-message {
   padding: 10px 12px 5px;
 }
-
-/* Collapsed text: 3 lines, wrapping to container width */
 .suggestion-card-message p {
   margin: 0;
   font-size: 14px;
   color: #333;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; /* limit to 3 lines */
-  line-clamp: 3; /* standard property for compatibility */
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
-  word-break: break-word; /* wrap long words */
+  word-break: break-word;
 }
-
-/* Expanded text: all lines, no cutoff */
 .suggestion-card-message p.expanded {
   display: block;
   overflow: visible;
   white-space: normal;
-  word-break: break-word;
 }
-
-
-/* See more button */
 .see-more-button {
   background: none;
   border: none;
@@ -134,27 +129,12 @@ header {
   padding: 0;
 }
 
-/* Image */
-.suggestion-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  transition: height 0.3s ease;
-}
-
-.suggestion-card img.image-collapsed {
-  height: 100px;
-}
-
-
-/* Footer (Like button always at the bottom) */
+/* Footer */
 .suggestion-card-footer {
-  margin-top: auto; /* Push footer to the bottom */
+  margin-top: auto;
   padding: 8px 12px;
   display: flex;
 }
-
-/* Like Button */
 .like-button {
   background: none;
   border: none;
@@ -166,32 +146,180 @@ header {
   gap: 4px;
   transition: color 0.2s ease;
 }
-
 .like-button .heart {
   font-size: 18px;
 }
-
 .like-button .like-text {
   font-size: 10px;
 }
-
 .like-button.liked {
   color: #e74c3c;
 }
-/* Top right time ago */
-.suggestion-card-header {
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
   display: flex;
   align-items: center;
-  justify-content: space-between; /* push time to right */
+  justify-content: center;
+  z-index: 999;
+  padding: 0;
+}
+
+div.modal-content {
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.modal-image {
+  width: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.modal-text {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.modal-text h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #333;
+}
+.modal-text p {
+  font-size: 14px;
+  color: #555;
+  white-space: normal;
+}
+
+.modal-hide-button {
+  background: #078585;
+  color: white;
+  border: none;
   padding: 8px 12px;
-  border-bottom: 1px solid #dfdfdf;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 12px;
+  border-radius: 4px;
+}
+/* Responsive: Fullscreen stacked layout on mobile */
+@media (max-width: 600px) {
+  .modal-content {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .modal-image {
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
+  }
+
+  .modal-text {
+    padding: 16px;
+    flex: none;
+    overflow-y: auto;
+  }
 }
 
-.time-ago {
-  font-size: 12px;
-  color: #999;
+/* Container */
+.image-view-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background: black;
 }
 
+/* Close X button in top right */
+.image-view-close-x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  line-height: 28px;
+  text-align: center;
+}
+
+/* Image */
+.image-view-full {
+  width: 100%;
+  height: 70vh;
+  object-fit: contain;
+  background: black;
+}
+
+/* Text container */
+.image-view-text {
+  padding: 16px;
+  background: white;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Username */
+.image-view-text h4 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Prompt text (collapsed to 3 lines) */
+.image-view-text p {
+  margin: 0;
+  font-size: 15px;
+  color: #555;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* Expanded shows all lines */
+.image-view-text p.expanded {
+  display: block;
+  overflow: visible;
+  white-space: normal;
+}
+
+/* See more button */
+.see-more-button {
+  background: none;
+  border: none;
+  color: #078585;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 0;
+}
 
 /* Random Generator Section
 .generator-section {

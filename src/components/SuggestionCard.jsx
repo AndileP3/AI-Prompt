@@ -1,3 +1,4 @@
+// SuggestionCard.jsx
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -7,48 +8,82 @@ export default function SuggestionCard({ postId }) {
   const [liked, setLiked] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [timeAgo, setTimeAgo] = useState("");
+  const [likesCount, setLikesCount] = useState(0);
+  const [commentsCount, setCommentsCount] = useState(0);
 
- useEffect(() => {
-  fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        setPost(data.post);
+  useEffect(() => {
+    // Load liked posts from localStorage
+    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+    if (likedPosts.includes(postId)) {
+      setLiked(true);
+    }
 
-        const createdAt = new Date(data.post.date);
-        const now = new Date();
-        const diffMs = now - createdAt;
+    // Fetch the post
+    fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setPost(data.post);
+          setLikesCount(data.post.likes_count || 0);
 
-        const totalMinutes = Math.floor(diffMs / (1000 * 60));
-        const minutes = totalMinutes % 60;
-        const totalHours = Math.floor(totalMinutes / 60);
-        const hours = totalHours % 24;
-        const days = Math.floor(totalHours / 24);
+          // Calculate time ago
+          const createdAt = new Date(data.post.date);
+          const now = new Date();
+          const diffMs = now - createdAt;
 
-        let timeStr = "";
+          const totalMinutes = Math.floor(diffMs / (1000 * 60));
+          const minutes = totalMinutes % 60;
+          const totalHours = Math.floor(totalMinutes / 60);
+          const hours = totalHours % 24;
+          const days = Math.floor(totalHours / 24);
 
-        if (days > 0) {
-          timeStr += `${days}d`;
-          if (hours > 0) {
-            timeStr += ` ${hours}h`;
+          let timeStr = "";
+          if (days > 0) {
+            timeStr += `${days}d`;
+            if (hours > 0) timeStr += ` ${hours}h`;
+          } else if (totalHours > 0) {
+            timeStr += `${totalHours}h`;
+            if (minutes > 0) timeStr += ` ${minutes}m`;
+          } else {
+            timeStr += `${minutes}m`;
           }
-        } else if (totalHours > 0) {
-          timeStr += `${totalHours}h`;
-          if (minutes > 0) {
-            timeStr += ` ${minutes}m`;
-          }
-        } else {
-          timeStr += `${minutes}m`;
+
+          setTimeAgo(timeStr);
         }
+      });
 
-        setTimeAgo(timeStr);
-      } else {
-        console.error("Failed to fetch post:", data.message);
-      }
-    })
-    .catch((err) => console.error("Network error:", err));
-}, [postId]);
+    // Fetch comments count
+    fetch(`http://localhost/AI/get_comments_count.php?post_id=${postId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setCommentsCount(data.count);
+        }
+      });
+  }, [postId]);
 
+  const handleLike = (e) => {
+    e.stopPropagation();
+    if (!liked) {
+      fetch(`http://localhost/AI/like_post.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `post_id=${postId}`,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setLikesCount((prev) => prev + 1);
+            setLiked(true);
+
+            // Save this post as liked in localStorage
+            const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+            likedPosts.push(postId);
+            localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+          }
+        });
+    }
+  };
 
   if (!post) {
     return (
@@ -63,13 +98,12 @@ export default function SuggestionCard({ postId }) {
   const { username, prompt, image } = post;
 
   return (
-    <div
-      className="suggestion-card"
-      style={{ cursor: "pointer" }}
-      onClick={() => navigate(`/post/${postId}`)}
-    >
-      {/* Top: Avatar, Username, Time */}
-      <div className="suggestion-card-header">
+    <div className="suggestion-card" style={{ cursor: "pointer" }}>
+      {/* Header */}
+      <div
+        className="suggestion-card-header"
+        onClick={() => navigate(`/post/${postId}`)}
+      >
         <div className="avatar">{username.charAt(0).toUpperCase()}</div>
         <span className="username">{username}</span>
         <span className="time-ago">{timeAgo}</span>
@@ -95,21 +129,32 @@ export default function SuggestionCard({ postId }) {
       <img
         src={image}
         alt={prompt}
-        className={expanded ? "image-collapsed" : ""}
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/image/${postId}`);
+        }}
       />
 
-      {/* Like Button */}
+      {/* Footer */}
       <div className="suggestion-card-footer">
         <button
           className={`like-button ${liked ? "liked" : ""}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setLiked(!liked);
-          }}
+          onClick={handleLike}
         >
           <span className="heart">♥</span>
           <span className="like-text">{liked ? "Liked" : "Like"}</span>
+          <span className="like-count">({likesCount})</span>
         </button>
+
+        <div
+          className="comment-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/image/${postId}`);
+          }}
+        >
+          💬 {commentsCount} Comment{commentsCount !== 1 && "s"}
+        </div>
       </div>
     </div>
   );
