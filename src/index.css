@@ -155,6 +155,151 @@ header {
 .like-button.liked {
   color: #e74c3c;
 }
+/* Main container as 3 columns */
+.three-column-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+  justify-content: center; /* center horizontally */
+}
+
+/* Left and Right panels */
+.user-info-panel,
+.notifications-panel {
+  position: fixed; /* keep it in place */
+  width: 20%;
+  min-width: 100px;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  height: fit-content;
+  z-index: 0; /* ensure it stays on top */
+}
+
+/* Position them on left and right sides of the screen */
+.user-info-panel {
+/* adjust as needed */
+  left: 5px;
+}
+
+.notifications-panel {
+  /* adjust as needed */
+  right: 5px;
+}
+
+
+/* Center column holds ShareCreation and posts stacked vertically */
+.center-column {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center; /* center children horizontally */
+}
+
+/* ShareCreation full width in center */
+.share-container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Suggestions list stacked vertically, centered and matching ShareCreation width */
+.suggestions-list {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Each SuggestionCard takes full width of its container */
+.suggestion-card {
+  width: 100%;
+  max-width: 600px;
+  flex-shrink: 0;
+}
+
+/* User Info Styling */
+.user-box {
+  text-align: center;
+}
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  background-color: #078585;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+.user-role {
+  font-size: 13px;
+  color: #777;
+}
+
+/* Notifications Styling */
+.notif-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.notif-list {
+  list-style: none;
+  padding: 0;
+}
+.notif-list li {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+@media (max-width: 950px) {
+  /* Hide side panels */
+  .user-info-panel,
+  .notifications-panel {
+    display: none;
+  }
+
+  /* Make center column take full width */
+  .center-column {
+    width: 100%;
+    padding: 0 10px; /* optional padding for spacing on small screens */
+  }
+
+  /* Suggestion cards take full width */
+  .suggestion-card {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Share container full width too */
+  .share-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Suggestions list full width */
+  .suggestions-list {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 
 /* Modal Overlay */
 .modal-overlay {
@@ -239,6 +384,129 @@ div.modal-content {
     overflow-y: auto;
   }
 }
+/* Modal Overlay */
+.Auth-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* dimmed background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(2px); /* Optional: blur background */
+}
+
+/* Modal Content Box */
+.Auth-modal-content {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: scaleIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Modal Title */
+.Auth-modal-content h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+/* Input fields */
+.modal-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border 0.3s;
+}
+
+.modal-input:focus {
+  border-color: #078585;
+  outline: none;
+}
+
+/* Submit Button */
+.modal-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #078585;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-submit-btn:hover {
+  background-color: #056c6c;
+}
+
+/* Toggle Sign Up / Sign In */
+.modal-toggle-btn {
+  background: none;
+  border: none;
+  color: #078585;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  text-decoration: underline;
+}
+
+.modal-toggle-btn:hover {
+  color: #056c6c;
+}
+
+/* Close Button (top right X) */
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-close-btn:hover {
+  color: #333;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .Auth-modal-content {
+    padding: 24px 20px;
+    max-width: 90%;
+  }
+}
 
 /* Container */
 .image-view-container {
@@ -271,6 +539,7 @@ div.modal-content {
 .image-view-full {
   width: 100%;
   height: 70vh;
+  padding-top: 10px;
   object-fit: contain;
   background: black;
 }
@@ -319,6 +588,173 @@ div.modal-content {
   cursor: pointer;
   margin-top: 4px;
   padding: 0;
+}
+/* Toggle button under the image */
+.toggle-layout-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 4px 10px;
+  align-self: center;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+.toggle-layout-button:hover {
+  background: rgba(81, 255, 151, 0.4);
+}
+/* Shrink image when text is expanded */
+.image-view-full.small-image {
+  height: 25vh;
+  padding-top: 10px;
+  transition: height 0.3s ease;
+}
+
+/* Expand text container */
+.image-view-text.expanded-text {
+  height: 75vh;
+  transition: height 0.3s ease;
+  overflow-y: auto;
+}
+/* Modern comment section wrapper */
+.image-view-comments {
+  margin-top: 15px;
+  border-top: 1px solid #ddd;
+  padding-top: 0px;
+}
+
+/* Section title */
+.image-view-comments h5 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  margin-top: 2px;
+  color: #222;
+}
+
+/* Individual comment */
+.comment {
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.comment strong {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.comment p {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* Comment input area */
+.comment-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+}
+
+/* Textarea styling */
+.comment-form textarea {
+  resize: none;
+  min-height: 30px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color 0.3s;
+}
+
+.comment-form textarea:focus {
+  border-color: #078585;
+  outline: none;
+}
+
+/* Post Comment button */
+.comment-form button {
+  align-self: flex-end;
+  background-color: #078585;
+  color: white;
+  padding: 4px 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+  background-color: #056c6c;
+}
+
+.comment-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Error message */
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+}
+/* Avatar styles (shared) */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #078585;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+/* Post author section */
+.post-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.author-name {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Comment header (avatar + name) */
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+/* Comment text itself */
+.comment p {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
 }
 
 /* Random Generator Section

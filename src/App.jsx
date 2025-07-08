@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import ShareCreation from "./components/ShareCreation";
 import LoadingScreen from "./components/LoadingScreen";
 import "./index.css";
+import UserInfoPanel from "./components/UserInfoPanel";
+import NotificationsPanel from "./components/NotificationsPanel";
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -64,21 +66,28 @@ export default function App() {
                 loggedInUser={loggedInUser}
                 setLoggedInUser={setLoggedInUser}
               />
-              <main className="main-content">
-                <ShareCreation
-                  submissions={submissions}
-                  setSubmissions={setSubmissions}
-                  loggedInUser={loggedInUser}
-                />
-                <section className="posts-section">
-                  <h2 className="suggestions-title">✨ Posts</h2>
-                  <div className="suggestions-grid">
-                    {filteredSuggestions.map((s) => (
-                      <SuggestionCard key={s.post_id} postId={s.post_id} />
-                    ))}
-                  </div>
-                </section>
-              </main>
+<main className="main-content three-column-layout">
+  <UserInfoPanel user={loggedInUser} />
+
+  <div className="center-column">
+    <ShareCreation
+      submissions={submissions}
+      setSubmissions={setSubmissions}
+      loggedInUser={loggedInUser}
+    />
+    <section className="posts-section">
+      <h2 className="suggestions-title">✨ Posts</h2>
+      <div className="suggestions-list">
+        {filteredSuggestions.map((s) => (
+          <SuggestionCard key={s.post_id} postId={s.post_id} />
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <NotificationsPanel />
+</main>
+
             </div>
           }
         />

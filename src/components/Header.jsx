@@ -131,6 +131,9 @@ export default function Header({ loggedInUser, setLoggedInUser }) {
       <button className="profile-action-btn" disabled>
         ⚙️ Settings
       </button>
+      <button className="profile-action-btn" disabled>
+        🔔 Notifications
+      </button>
       <button className="profile-action-btn" onClick={logout}>
         🚪 Logout
       </button>
@@ -147,8 +150,8 @@ export default function Header({ loggedInUser, setLoggedInUser }) {
       </header>
 
       {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="Auth-modal" onClick={closeModal}>
+          <div className="Auth-modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>{isSignUp ? "Create Account" : "Sign In"}</h2>
             <form onSubmit={handleSubmit}>
               {isSignUp && (

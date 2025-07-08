@@ -1,4 +1,3 @@
-// SuggestionCard.jsx
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -11,14 +10,12 @@ export default function SuggestionCard({ postId }) {
   const [likesCount, setLikesCount] = useState(0);
   const [commentsCount, setCommentsCount] = useState(0);
 
-  useEffect(() => {
-    // Load liked posts from localStorage
-    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
-    if (likedPosts.includes(postId)) {
-      setLiked(true);
-    }
+  const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    // Fetch the post
+  useEffect(() => {
+    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+    if (likedPosts.includes(postId)) setLiked(true);
+
     fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -26,33 +23,22 @@ export default function SuggestionCard({ postId }) {
           setPost(data.post);
           setLikesCount(data.post.likes_count || 0);
 
-          // Calculate time ago
           const createdAt = new Date(data.post.date);
           const now = new Date();
           const diffMs = now - createdAt;
-
           const totalMinutes = Math.floor(diffMs / (1000 * 60));
           const minutes = totalMinutes % 60;
           const totalHours = Math.floor(totalMinutes / 60);
           const hours = totalHours % 24;
           const days = Math.floor(totalHours / 24);
-
           let timeStr = "";
-          if (days > 0) {
-            timeStr += `${days}d`;
-            if (hours > 0) timeStr += ` ${hours}h`;
-          } else if (totalHours > 0) {
-            timeStr += `${totalHours}h`;
-            if (minutes > 0) timeStr += ` ${minutes}m`;
-          } else {
-            timeStr += `${minutes}m`;
-          }
-
+          if (days > 0) timeStr += `${days}d${hours > 0 ? ` ${hours}h` : ""}`;
+          else if (totalHours > 0) timeStr += `${totalHours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
+          else timeStr += `${minutes}m`;
           setTimeAgo(timeStr);
         }
       });
 
-    // Fetch comments count
     fetch(`http://localhost/AI/get_comments_count.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -64,19 +50,17 @@ export default function SuggestionCard({ postId }) {
 
   const handleLike = (e) => {
     e.stopPropagation();
-    if (!liked) {
+    if (!liked && storedUser) {
       fetch(`http://localhost/AI/like_post.php`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `post_id=${postId}`,
+        body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
             setLikesCount((prev) => prev + 1);
             setLiked(true);
-
-            // Save this post as liked in localStorage
             const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
             likedPosts.push(postId);
             localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
@@ -99,33 +83,21 @@ export default function SuggestionCard({ postId }) {
 
   return (
     <div className="suggestion-card" style={{ cursor: "pointer" }}>
-      {/* Header */}
-      <div
-        className="suggestion-card-header"
-        onClick={() => navigate(`/post/${postId}`)}
-      >
+      <div className="suggestion-card-header" onClick={() => navigate(`/post/${postId}`)}>
         <div className="avatar">{username.charAt(0).toUpperCase()}</div>
         <span className="username">{username}</span>
         <span className="time-ago">{timeAgo}</span>
       </div>
 
-      {/* Message */}
-      <div
-        className="suggestion-card-message"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="suggestion-card-message" onClick={(e) => e.stopPropagation()}>
         <p className={expanded ? "expanded" : ""}>{prompt}</p>
         {prompt.length > 100 && (
-          <button
-            className="see-more-button"
-            onClick={() => setExpanded(!expanded)}
-          >
+          <button className="see-more-button" onClick={() => setExpanded(!expanded)}>
             {expanded ? "See less" : "See more"}
           </button>
         )}
       </div>
 
-      {/* Image */}
       <img
         src={image}
         alt={prompt}
@@ -135,12 +107,8 @@ export default function SuggestionCard({ postId }) {
         }}
       />
 
-      {/* Footer */}
       <div className="suggestion-card-footer">
-        <button
-          className={`like-button ${liked ? "liked" : ""}`}
-          onClick={handleLike}
-        >
+        <button className={`like-button ${liked ? "liked" : ""}`} onClick={handleLike}>
           <span className="heart">♥</span>
           <span className="like-text">{liked ? "Liked" : "Like"}</span>
           <span className="like-count">({likesCount})</span>
