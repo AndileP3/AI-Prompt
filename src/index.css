@@ -128,6 +128,7 @@ header {
   cursor: pointer;
   display: flex;
   align-items: center;
+  display: block;
   gap: 4px;
   transition: color 0.2s ease;
 }
@@ -136,6 +137,7 @@ header {
 }
 .like-button .like-text {
   font-size: 10px;
+  font-weight: bold;
 }
 .like-button.liked {
   color: #e74c3c;
@@ -1156,7 +1158,17 @@ button.generate-btn:hover {
   font-size: 28px;
   margin: 0 auto 8px auto;
 }
-
+.comment-button {
+  margin-left: auto; /* Pushes to far right */
+  cursor: pointer;
+  color: #444;
+  font-weight: 500;
+  font-size: 14px;
+}
+.comment-button:hover {
+  font-weight: bold;
+  color: #078585; /* Change color on hover */
+}
 /* Main post */
 .main-post {
   background: white;
