@@ -110,9 +110,9 @@ fetch(`http://localhost/AI/like_post.php`, {
 
       <div className="suggestion-card-footer">
         <button className={`like-button ${liked ? "liked" : ""}`} onClick={handleLike}>
-          <span className="heart">♥</span>
+          <span className="like-count">{likesCount}</span>
+          <span className="heart">♥ </span>
           <span className="like-text">{liked ? "Liked" : "Like"}</span>
-          <span className="like-count">({likesCount})</span>
         </button>
 
         <div
@@ -122,7 +122,7 @@ fetch(`http://localhost/AI/like_post.php`, {
             navigate(`/image/${postId}`);
           }}
         >
-          💬 {commentsCount} Comment{commentsCount !== 1 && "s"}
+          {commentsCount} Comment{commentsCount !== 1 && "s"}
         </div>
       </div>
     </div>
