@@ -10,7 +10,7 @@ export default function ImageView() {
   const [newComment, setNewComment] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
   const [error, setError] = useState(null);
-  const [showTextFull, setShowTextFull] = useState(false); // ⬅️ Layout toggle
+  const [showTextFull, setShowTextFull] = useState(false);
 
   const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
@@ -59,6 +59,7 @@ export default function ImageView() {
         post_id: numericPostId,
         user_id: storedUser.user_id,
         comment_text: trimmedComment,
+        username: storedUser.username, // ✅ Send real username for notification
       }),
     })
       .then((res) => res.json())
@@ -105,10 +106,10 @@ export default function ImageView() {
       </button>
 
       <div className={`image-view-text ${showTextFull ? "expanded-text" : ""}`}>
-       <div className="post-author">
-  <div className="avatar">{username[0]?.toUpperCase()}</div>
-  <span className="author-name">{username}</span>
-</div>
+        <div className="post-author">
+          <div className="avatar">{username[0]?.toUpperCase()}</div>
+          <span className="author-name">{username}</span>
+        </div>
 
         <p className={expanded ? "expanded" : ""}>{prompt}</p>
         {prompt.length > 100 && (
@@ -119,6 +120,7 @@ export default function ImageView() {
             {expanded ? "See less" : "See more"}
           </button>
         )}
+
         <div className="comment-form">
           <textarea
             placeholder="Add a comment..."
@@ -134,25 +136,23 @@ export default function ImageView() {
           </button>
           {error && <p className="error-message">{error}</p>}
         </div>
+
         <div className="image-view-comments">
           <h5>Comments:</h5>
           {comments.length === 0 ? (
             <p>Be the first to comment!</p>
           ) : (
             comments.map((c, i) => (
-  <div key={i} className="comment">
-    <div className="comment-header">
-      <div className="avatar">{c.username[0]?.toUpperCase()}</div>
-      <strong>{c.username}</strong>
-    </div>
-    <p>{c.text}</p>
-  </div>
-))
-
+              <div key={i} className="comment">
+                <div className="comment-header">
+                  <div className="avatar">{c.username[0]?.toUpperCase()}</div>
+                  <strong>{c.username}</strong>
+                </div>
+                <p>{c.text}</p>
+              </div>
+            ))
           )}
         </div>
-
-
       </div>
     </div>
   );

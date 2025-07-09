@@ -25,22 +25,11 @@ header {
   }
 }
 /* Suggestions Section */
-/* Suggestion Card (existing styles) */
-/* Suggestions Section */
 .suggestions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns:1fr;
   gap: 20px;
 }
-
-/* Suggestion Card */
-/* Suggestions Section */
-.suggestions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
 /* Suggestion Card */
 .suggestion-card {
   background: white;
@@ -50,11 +39,6 @@ header {
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease;
-}
-
-
-.suggestion-card:hover {
-  transform: scale(1.02);
 }
 
 /* Image */
@@ -131,6 +115,7 @@ header {
 
 /* Footer */
 .suggestion-card-footer {
+  border-top: 1px solid #dfdfdf;
   margin-top: auto;
   padding: 8px 12px;
   display: flex;
@@ -175,7 +160,7 @@ header {
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  height: fit-content;
+  height: 75%;
   z-index: 0; /* ensure it stays on top */
 }
 
@@ -258,15 +243,23 @@ header {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-top: 0px;
 }
 .notif-list {
   list-style: none;
   padding: 0;
+  margin-top: 0px;
 }
 .notif-list li {
   font-size: 14px;
-  margin-bottom: 8px;
-  color: #333;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  padding: 7px;
+  background-color: #739d94;
+  color: #131212;
+}
+.notif-list li small{
+  color: #ffffff;
 }
 @media (max-width: 950px) {
   /* Hide side panels */
@@ -782,7 +775,9 @@ button.generate-btn {
 button.generate-btn:hover {
   background: #a8faef;
 /* } */
-
+.other-posts h4{
+  margin: 5px;
+}
 /* Prompt Card */
 .prompt-card {
   background: white;
@@ -1138,27 +1133,13 @@ button.generate-btn:hover {
   z-index: 1000;
 }
 
-/* Main layout */
-.post-layout {
-  display: flex;
-  gap: 24px;
-  padding: 24px;
-}
-
-/* Left Sidebar */
-.user-sidebar {
-  width: 20%;
-  position: sticky;
-  top: 120px;
-  align-self: flex-start;
-}
-
 .user-card {
   background: white;
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   text-align: center;
+  height: fit-content;
 }
 
 /* Large avatar */
@@ -1187,16 +1168,6 @@ button.generate-btn:hover {
   width: 100%; /* Always take full container width */
   max-width: 900px; /* Optional: limit max width if you want */
 }
-
-/* Image always fills width but keeps aspect ratio */
-.post-image-large {
-  width: 100%;
-  height: auto;
-  max-height: 400px;
-  display: block;
-  object-fit: contain;
-}
-
 /* Text content grows vertically as needed */
 .post-content {
   padding: 1rem;
@@ -1208,12 +1179,12 @@ button.generate-btn:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
-  padding: 24px;
+  padding: 5px;
 }
 
 /* Sidebar styling */
 .user-sidebar {
-  width: 20%;
+  width: 35%;
   position: sticky;
   top: 120px;
   align-self: flex-start;

@@ -51,11 +51,12 @@ export default function SuggestionCard({ postId }) {
   const handleLike = (e) => {
     e.stopPropagation();
     if (!liked && storedUser) {
-      fetch(`http://localhost/AI/like_post.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
-      })
+fetch(`http://localhost/AI/like_post.php`, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
+})
+
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
