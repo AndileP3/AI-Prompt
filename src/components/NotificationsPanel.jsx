@@ -54,7 +54,7 @@ export default function NotificationsPanel() {
         ) : (
           notifications.map((notif, idx) => (
             <li key={idx}>
-              {notif.message} <br />
+              <div className="notif-text">{notif.message} </div>
               <small>{formatTimeDifference(notif.created_at)} ago</small>
             </li>
           ))
