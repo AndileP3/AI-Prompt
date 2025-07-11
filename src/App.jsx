@@ -7,9 +7,10 @@ import Post from "./components/Post";
 import Header from "./components/Header";
 import ShareCreation from "./components/ShareCreation";
 import LoadingScreen from "./components/LoadingScreen";
-import "./index.css";
 import UserInfoPanel from "./components/UserInfoPanel";
 import NotificationsPanel from "./components/NotificationsPanel";
+import AuthModal from "./components/AuthModal"; // ⬅️ Shared modal component
+import "./index.css";
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -17,6 +18,7 @@ export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [fetchedSuggestions, setFetchedSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false); // ⬅️ Shared modal state
 
   useEffect(() => {
     const startTime = Date.now();
@@ -57,7 +59,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Home Page */}
         <Route
           path="/"
           element={
@@ -65,35 +66,45 @@ export default function App() {
               <Header
                 loggedInUser={loggedInUser}
                 setLoggedInUser={setLoggedInUser}
+                setShowModal={setShowModal} // ⬅️ Pass down to Header
               />
-<main className="main-content three-column-layout">
-  <UserInfoPanel user={loggedInUser} />
 
-  <div className="center-column">
-    <ShareCreation
-      submissions={submissions}
-      setSubmissions={setSubmissions}
-      loggedInUser={loggedInUser}
-    />
-    <section className="posts-section">
-      <h2 className="suggestions-title">✨ Posts</h2>
-      <div className="suggestions-list">
-        {filteredSuggestions.map((s) => (
-          <SuggestionCard key={s.post_id} postId={s.post_id} />
-        ))}
-      </div>
-    </section>
-  </div>
+              <main className="main-content three-column-layout">
+                <UserInfoPanel
+                  user={loggedInUser}
+                  setShowModal={setShowModal} // ⬅️ Pass down to UserInfoPanel
+                />
 
-  <NotificationsPanel />
-</main>
+                <div className="center-column">
+                  <ShareCreation
+                    submissions={submissions}
+                    setSubmissions={setSubmissions}
+                    loggedInUser={loggedInUser}
+                  />
+                  <section className="posts-section">
+                    <h2 className="suggestions-title">✨ Posts</h2>
+                    <div className="suggestions-list">
+                      {filteredSuggestions.map((s) => (
+                        <SuggestionCard key={s.post_id} postId={s.post_id} />
+                      ))}
+                    </div>
+                  </section>
+                </div>
 
+                <NotificationsPanel />
+              </main>
+
+              {/* Shared login/signup modal */}
+              <AuthModal
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setLoggedInUser={setLoggedInUser}
+              />
             </div>
           }
         />
-        {/* Single Post Page */}
+
         <Route path="/post/:id" element={<Post />} />
-        {/* Fullscreen Image View */}
         <Route path="/image/:postId" element={<ImageView />} />
       </Routes>
     </BrowserRouter>
