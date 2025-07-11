@@ -159,7 +159,7 @@ header {
 .user-info-panel,
 .notifications-panel {
   position: fixed; /* keep it in place */
-  width: 20%;
+  width: 16%;
   min-width: 100px;
   background: white;
   border-radius: 8px;
@@ -172,12 +172,12 @@ header {
 /* Position them on left and right sides of the screen */
 .user-info-panel {
 /* adjust as needed */
-  left: 5px;
+  left: 10%;
 }
 
 .notifications-panel {
   /* adjust as needed */
-  right: 5px;
+  right: 10%;
 }
 .post-images-container {
   display: grid;
@@ -200,16 +200,17 @@ header {
 
 .post-images-container img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
+  height: 100%;
+  max-height: 350px;
+  border-radius: 2px;
+  object-fit:cover;
 }
 
 
 
 /* Center column holds ShareCreation and posts stacked vertically */
 .center-column {
-  width: 50%;
+  width: 38%;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -353,14 +354,25 @@ header {
 }
 @media (max-width: 950px) {
   /* Hide side panels */
-  .user-info-panel,
-  .notifications-panel {
+  .user-info-panel
+  {
+    width: 0%;
     display: none;
   }
+  .notifications-panel {
+    width: 32%;
+    right: 8%;
+ 
+  }
+   .three-column-layout{
+     display: flex;
+     justify-content: start;
 
+   }
   /* Make center column take full width */
   .center-column {
-    width: 100%;
+    width: 50%;
+    left: 10%;
     padding: 0 10px; /* optional padding for spacing on small screens */
   }
 
@@ -448,6 +460,17 @@ div.modal-content {
 }
 /* Responsive: Fullscreen stacked layout on mobile */
 @media (max-width: 600px) {
+   .notifications-panel {
+  display: none;
+ 
+  }
+
+  /* Make center column take full width */
+  .center-column {
+    width: 100%;
+    
+    padding: 0 10px; /* optional padding for spacing on small screens */
+  }
   .modal-content {
     flex-direction: column;
     width: 100%;
