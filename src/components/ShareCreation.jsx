@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 
-
 export default function ShareCreation({ submissions, setSubmissions, loggedInUser }) {
   const [prompt, setPrompt] = useState("");
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!prompt || !file) {
-      alert("Please enter a prompt and select an image.");
+
+    if (!prompt && files.length === 0) {
+      alert("Please write something or attach at least one image.");
       return;
     }
+
     if (!loggedInUser || !loggedInUser.user_id) {
       alert("You must be logged in to post.");
       return;
@@ -19,8 +20,8 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
 
     const formData = new FormData();
     formData.append("message", prompt);
-    formData.append("image", file);
     formData.append("user_id", loggedInUser.user_id);
+    files.forEach((file) => formData.append("image[]", file)); // Multiple images
 
     try {
       const res = await fetch("http://localhost/AI/post.php", {
@@ -39,10 +40,12 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
       }
 
       if (data.success) {
-        const imageUrl = "http://localhost/AI/uploads/" + data.filename;
-        setSubmissions([{ prompt, image: imageUrl }, ...submissions]);
+        const imageUrls = (data.filenames || []).map(
+          (name) => `http://localhost/AI/uploads/${name}`
+        );
+        setSubmissions([{ prompt, images: imageUrls }, ...submissions]);
         setPrompt("");
-        setFile(null);
+        setFiles([]);
         setShowModal(false);
       } else {
         alert("Error: " + (data.message || "Failed to save post"));
@@ -54,20 +57,14 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
 
   return (
     <section className="share-container">
-      {/* Input area styled like LinkedIn */}
       <div className="share-input-wrapper" onClick={() => setShowModal(true)}>
         <div className="avatar-circle">
           {loggedInUser?.username ? loggedInUser.username[0].toUpperCase() : "U"}
         </div>
-        <input
-          type="text"
-          placeholder="Start a post"
-          readOnly
-        />
+        <input type="text" placeholder="Start a post" readOnly />
         <button className="inline-share-button">Share</button>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="share-modal-overlay">
           <div className="share-modal">
@@ -79,22 +76,26 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={4}
               />
-          <div className="modal-actions">
-  <label className="modal-file-label">
-    🖼️ Photo
-    <input
-      type="file"
-      name="image"
-      accept="image/*"
-      onChange={(e) => setFile(e.target.files[0])}
-      style={{ display: "none" }}
-    />
-  </label>
-  <button type="submit" className="modal-post-button">
-    Post
-  </button>
-</div>
 
+              <div className="modal-actions">
+                <label className="modal-file-label">
+                  🖼️ Photo(s)
+                  <input
+                    type="file"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      const selected = Array.from(e.target.files).slice(0, 4);
+                      setFiles(selected);
+                    }}
+                    style={{ display: "none" }}
+                  />
+                </label>
+                <button type="submit" className="modal-post-button">
+                  Post
+                </button>
+              </div>
             </form>
             <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
           </div>
@@ -106,8 +107,14 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
           <h4>✨ Your Post was Submitted</h4>
           {submissions.map((s, index) => (
             <div key={index} className="submission-card">
-              <img src={s.image} alt={s.prompt} className="submission-image" />
-              <p className="submission-prompt">{s.prompt}</p>
+              {s.images?.length > 0 && (
+                <div className={`post-images-container images-${s.images.length}`}>
+                  {s.images.map((img, idx) => (
+                    <img key={idx} src={img} alt={`uploaded ${idx}`} />
+                  ))}
+                </div>
+              )}
+              {s.prompt && <p className="submission-prompt">{s.prompt}</p>}
             </div>
           ))}
         </div>
