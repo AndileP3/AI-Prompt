@@ -156,10 +156,10 @@ header {
 }
 
 /* Left and Right panels */
-.user-info-panel,
-.notifications-panel {
+.user-info-panel
+{
   position: fixed; /* keep it in place */
-  width: 16%;
+  width: 19%;
   min-width: 100px;
   background: white;
   border-radius: 8px;
@@ -168,16 +168,85 @@ header {
   height: 75%;
   z-index: 0; /* ensure it stays on top */
 }
+.notifications-panel {
+
+  position: fixed; /* keep it in place */
+  width: 19%;
+  min-width: 100px;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  height: 75%;
+  z-index: 0;
+ 
+  overflow-y: auto; /* Enables vertical scroll */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Style the scrollbar (WebKit-based browsers like Chrome, Edge, Safari) */
+.notifications-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notifications-panel::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+.notifications-panel::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+/* Title */
+.notif-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: #333;
+}
+
+/* List Styling */
+.notif-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual Notification */
+.notif-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eee;
+  word-wrap: break-word;
+}
+
+.notif-list li:last-child {
+  border-bottom: none;
+}
+
+.notif-text {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+small {
+  display: block;
+  color: #888;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
 
 /* Position them on left and right sides of the screen */
 .user-info-panel {
 /* adjust as needed */
-  left: 10%;
+  left: 7%;
 }
 
 .notifications-panel {
   /* adjust as needed */
-  right: 10%;
+  right: 7%;
 }
 .post-images-container {
   display: grid;
@@ -1083,7 +1152,9 @@ button.generate-btn:hover {
 .community-submissions {
   margin-top: 20px;
 }
-
+.notif-text{
+  font-weight: bold;
+}
 .submission-card {
   display: flex;
   align-items: center;
