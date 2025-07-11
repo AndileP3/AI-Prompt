@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ImageView() {
   const { postId } = useParams();
   const navigate = useNavigate();
+
   const [post, setPost] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [comments, setComments] = useState([]);
@@ -11,7 +12,9 @@ export default function ImageView() {
   const [loadingComment, setLoadingComment] = useState(false);
   const [error, setError] = useState(null);
   const [showTextFull, setShowTextFull] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  const touchStartX = useRef(null);
   const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
   useEffect(() => {
@@ -59,17 +62,14 @@ export default function ImageView() {
         post_id: numericPostId,
         user_id: storedUser.user_id,
         comment_text: trimmedComment,
-        username: storedUser.username, // ✅ Send real username for notification
+        username: storedUser.username,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         setLoadingComment(false);
         if (data.success) {
-          setComments((prevComments) => [
-            ...prevComments,
-            { username: storedUser.username, text: trimmedComment },
-          ]);
+          setComments((prev) => [...prev, { username: storedUser.username, text: trimmedComment }]);
           setNewComment("");
         } else {
           setError(data.message || "Failed to add comment.");
@@ -84,19 +84,58 @@ export default function ImageView() {
 
   if (!post) return <p>Loading...</p>;
 
-  const { username, prompt, image } = post;
+  const { username, prompt } = post;
+
+  let images = [];
+  try {
+    images = Array.isArray(post.image) ? post.image : JSON.parse(post.image);
+  } catch {
+    images = typeof post.image === "string" ? [post.image] : [];
+  }
+
+  const showPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const showNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (deltaX > 50) showPrev();
+    else if (deltaX < -50) showNext();
+    touchStartX.current = null;
+  };
 
   return (
     <div className="image-view-container">
-      <button className="image-view-close-x" onClick={() => navigate(-1)}>
-        ×
-      </button>
+      <button className="image-view-close-x" onClick={() => navigate(-1)}>×</button>
 
-      <img
-        src={image}
-        alt={prompt}
-        className={`image-view-full ${showTextFull ? "small-image" : ""}`}
-      />
+      <div
+        className={`image-view-scroll ${showTextFull ? "shrink" : ""}`}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {images.length > 1 && (
+          <>
+            <button className="arrow-button left" onClick={showPrev}>‹</button>
+            <button className="arrow-button right" onClick={showNext}>›</button>
+          </>
+        )}
+        {images.length > 0 && (
+          <img
+            src={images[currentIndex]}
+            alt={`post-${currentIndex}`}
+            className="image-view-full"
+          />
+        )}
+      </div>
 
       <button
         className="toggle-layout-button"
@@ -113,10 +152,7 @@ export default function ImageView() {
 
         <p className={expanded ? "expanded" : ""}>{prompt}</p>
         {prompt.length > 100 && (
-          <button
-            className="see-more-button"
-            onClick={() => setExpanded(!expanded)}
-          >
+          <button className="see-more-button" onClick={() => setExpanded(!expanded)}>
             {expanded ? "See less" : "See more"}
           </button>
         )}
@@ -128,10 +164,7 @@ export default function ImageView() {
             onChange={(e) => setNewComment(e.target.value)}
             disabled={loadingComment || !storedUser}
           />
-          <button
-            onClick={handleSubmitComment}
-            disabled={loadingComment || !storedUser}
-          >
+          <button onClick={handleSubmitComment} disabled={loadingComment || !storedUser}>
             {loadingComment ? "Posting..." : "Post Comment"}
           </button>
           {error && <p className="error-message">{error}</p>}
