@@ -51,12 +51,11 @@ export default function SuggestionCard({ postId }) {
   const handleLike = (e) => {
     e.stopPropagation();
     if (!liked && storedUser) {
-fetch(`http://localhost/AI/like_post.php`, {
-  method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
-})
-
+      fetch(`http://localhost/AI/like_post.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
+      })
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -81,6 +80,24 @@ fetch(`http://localhost/AI/like_post.php`, {
   }
 
   const { username, prompt, image } = post;
+let images = [];
+try {
+  images = Array.isArray(post.image) ? post.image : JSON.parse(post.image);
+} catch {
+  images = [];
+}
+
+
+try {
+  images = typeof post.image === "string"
+    ? JSON.parse(post.image)
+    : Array.isArray(post.image)
+    ? post.image
+    : [];
+} catch (err) {
+  console.error("Invalid image JSON:", post.image);
+}
+
 
   return (
     <div className="suggestion-card" style={{ cursor: "pointer" }}>
@@ -91,39 +108,54 @@ fetch(`http://localhost/AI/like_post.php`, {
       </div>
 
       <div className="suggestion-card-message" onClick={(e) => e.stopPropagation()}>
-        <p className={expanded ? "expanded" : ""}>{prompt}</p>
-        {prompt.length > 100 && (
-          <button className="see-more-button" onClick={() => setExpanded(!expanded)}>
-            {expanded ? "See less" : "See more"}
-          </button>
+        {prompt && (
+          <>
+            <p className={expanded ? "expanded" : ""}>{prompt}</p>
+            {prompt.length > 100 && (
+              <button className="see-more-button" onClick={() => setExpanded(!expanded)}>
+                {expanded ? "See less" : "See more"}
+              </button>
+            )}
+          </>
         )}
       </div>
-
+{images.length > 0 && (
+  <div
+    className={`post-images-container images-${images.length}`}
+    onClick={() => navigate(`/image/${postId}`)} // Redirects when images are clicked
+    style={{ cursor: "pointer" }}
+  >
+    {images.map((img, idx) => (
       <img
-        src={image}
-        alt={prompt}
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/image/${postId}`);
-        }}
+        key={idx}
+        src={img}
+        alt={`post-${idx}`}
+        className="post-image"
       />
+    ))}
+  </div>
+)}
+
+
+
 
       <div className="suggestion-card-footer">
         <button className={`like-button ${liked ? "liked" : ""}`} onClick={handleLike}>
           <span className="like-count">{likesCount}</span>
-          <span className="heart">♥ </span>
+          <span className="heart">♥</span>
           <span className="like-text">{liked ? "Liked" : "Like"}</span>
         </button>
 
-        <div
-          className="comment-button"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(`/image/${postId}`);
-          }}
-        >
-          {commentsCount} Comment{commentsCount !== 1 && "s"}
-        </div>
+   <div
+  className="comment-button"
+  onClick={(e) => {
+    e.stopPropagation();
+    navigate(`/image/${postId}`); // Redirect to ImageView
+  }}
+>
+  {commentsCount} Comment{commentsCount !== 1 && "s"}
+</div>
+
       </div>
     </div>
   );
