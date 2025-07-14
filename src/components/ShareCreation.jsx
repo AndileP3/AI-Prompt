@@ -91,6 +91,25 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
                     }}
                     style={{ display: "none" }}
                   />
+                  {files.length > 0 && (
+  <div className="attached-files-preview">
+    {files.map((file, index) => (
+      <div key={index} className="file-chip">
+        <span className="file-name">{file.name}</span>
+        <button
+          type="button"
+          className="remove-file-button"
+          onClick={() => {
+            setFiles(files.filter((_, i) => i !== index));
+          }}
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
                 </label>
                 <button type="submit" className="modal-post-button">
                   Post
