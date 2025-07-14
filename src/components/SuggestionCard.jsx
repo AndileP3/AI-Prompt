@@ -119,44 +119,61 @@ try {
           </>
         )}
       </div>
-{images.length > 0 && (
-  <div
-    className={`post-images-container images-${images.length}`}
-    onClick={() => navigate(`/image/${postId}`)} // Redirects when images are clicked
-    style={{ cursor: "pointer" }}
-  >
-    {images.map((img, idx) => (
-      <img
-        key={idx}
-        src={img}
-        alt={`post-${idx}`}
-        className="post-image"
-      />
-    ))}
-  </div>
-)}
+          {images.length > 0 && (
+            <div
+              className={`post-images-container images-${images.length}`}
+              onClick={() => navigate(`/image/${postId}`)} // Redirects when images are clicked
+              style={{ cursor: "pointer" }}
+            >
+              {images.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`post-${idx}`}
+                  className="post-image"
+                />
+              ))}
+            </div>
+          )}
 
 
 
 
       <div className="suggestion-card-footer">
-        <button className={`like-button ${liked ? "liked" : ""}`} onClick={handleLike}>
-          <span className="like-count">{likesCount}</span>
-          <span className="heart">♥</span>
-          <span className="like-text">{liked ? "Liked" : "Like"}</span>
-        </button>
+  <div className="footer-stats-row">
+    <div className="likes-summary">
+      <span className="like-count">{likesCount}</span>
+      <span className="heart">♥</span>
+    </div>
+    <div className="comments-summary"
+          onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/image/${postId}`);
+      }}
+      >
+      <span>{commentsCount} Comment{commentsCount !== 1 && "s"}</span>
+    </div>
+  </div>
 
-   <div
-  className="comment-button"
-  onClick={(e) => {
-    e.stopPropagation();
-    navigate(`/image/${postId}`); // Redirect to ImageView
-  }}
->
-  {commentsCount} Comment{commentsCount !== 1 && "s"}
+  <hr className="footer-divider" />
+
+  <div className="footer-actions">
+    <button className={`like-button ${liked ? "liked" : ""}`} onClick={handleLike}>
+      <span className="like-text">{liked ? "Liked" : "Like"}</span>
+    </button>
+
+    <div
+      className="comment-button"
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/image/${postId}`);
+      }}
+    >
+      Comment
+    </div>
+  </div>
 </div>
 
-      </div>
     </div>
   );
 }
