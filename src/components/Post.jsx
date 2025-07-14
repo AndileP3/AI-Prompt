@@ -79,15 +79,20 @@ export default function Post() {
       <div className="post-layout">
         {/* Left Sidebar */}
         <aside className="user-sidebar">
-          <div className="user-card">
-            <div className="avatar-circle-large">
-              {user.username[0].toUpperCase()}
-            </div>
-            <h3>@{user.username}</h3>
-            <p>User ID: {user.user_id}</p>
-            <p>Total Posts: {user.total_posts}</p>
-          </div>
-        </aside>
+  <div className="user-card">
+    <div className="user-info">
+      <div className="avatar-circle-large">
+        {user.username[0].toUpperCase()}
+      </div>
+      <div className="user-text">
+        <h3>@{user.username}</h3>
+        <p className="user-id">User ID: {user.user_id}</p>
+        <p>Total Posts: {user.total_posts}</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
 
         {/* Main Content */}
         <main className="user-posts">
