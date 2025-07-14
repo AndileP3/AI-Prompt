@@ -116,13 +116,39 @@ header {
   padding: 0;
 }
 
-/* Footer */
-.suggestion-card-footer {
-  border-top: 1px solid #dfdfdf;
-  margin-top: auto;
-  padding: 8px 12px;
+/* New layout styles */
+.footer-stats-row {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 7px;
+  font-size: 13px;
+  color: #555;
 }
+
+.likes-summary, .comments-summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-divider {
+  border: none;
+  border-top: 1px solid #dfdfdf;
+  margin: 0px 0;
+}
+.heart{
+  color: #ea5f50;
+  font-size: 16px;
+}
+.footer-actions {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Existing styles remain intact */
 .like-button {
   background: none;
   border: none;
@@ -131,7 +157,6 @@ header {
   cursor: pointer;
   display: flex;
   align-items: center;
-  display: block;
   gap: 4px;
   transition: color 0.2s ease;
 }
@@ -145,6 +170,14 @@ header {
 .like-button.liked {
   color: #e74c3c;
 }
+
+/* Comment button styling */
+.comment-button {
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 /* Main container as 3 columns */
 .three-column-layout {
   display: flex;
@@ -168,6 +201,56 @@ header {
   height: 75%;
   z-index: 0; /* ensure it stays on top */
 }
+.user-feedback-form {
+  margin: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.user-feedback-form h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.feedback-textarea {
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 8px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.feedback-textarea:focus {
+  border-color: #078585;
+}
+
+.submit-feedback-button {
+  align-self: flex-end;
+  background-color: #078585;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-feedback-button:hover {
+  background-color: #056a6a;
+}
+
 .notifications-panel {
 
   position: fixed; /* keep it in place */
@@ -261,16 +344,41 @@ small {
   grid-template-columns: 1fr 1fr;
 }
 .images-3 {
+  display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr; /* Two rows */
+  gap: 6px;
+  height: auto; /* Or your preferred fixed height */
 }
+
+.images-3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Positioning for each image */
+.images-3 img:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+.images-3 img:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+.images-3 img:nth-child(3) {
+  grid-column: 2;
+  grid-row: 1 / span 2; /* Spans both rows vertically */
+}
+
 .images-4 {
   grid-template-columns: 1fr 1fr;
 }
 
 .post-images-container img {
   width: 100%;
-  height: 100%;
-  max-height: 350px;
+  max-height: auto;
   border-radius: 2px;
   object-fit:cover;
 }
@@ -309,7 +417,7 @@ small {
 /* Each SuggestionCard takes full width of its container */
 .suggestion-card {
   width: 100%;
-  max-width: 600px;
+ 
   flex-shrink: 0;
 }
 
@@ -435,14 +543,13 @@ small {
   }
    .three-column-layout{
      display: flex;
-     justify-content: start;
+     justify-content: flex-start;
 
    }
   /* Make center column take full width */
   .center-column {
     width: 50%;
-    left: 10%;
-    padding: 0 10px; /* optional padding for spacing on small screens */
+   /* optional padding for spacing on small screens */
   }
 
   /* Suggestion cards take full width */
@@ -538,7 +645,7 @@ div.modal-content {
   .center-column {
     width: 100%;
     
-    padding: 0 10px; /* optional padding for spacing on small screens */
+     /* optional padding for spacing on small screens */
   }
   .modal-content {
     flex-direction: column;
@@ -1103,15 +1210,16 @@ button.generate-btn:hover {
   min-width: 0px;
 }
 .modal-file-label {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 6px;
   background: #eef3f8;
   color: #0e9c7d;
   border: 1px solid #dbe2ea;
-  padding: 6px 12px;
+  padding: 3px 6px;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 450;
   cursor: pointer;
   font-size: 14px;
   transition: background 0.2s ease;
@@ -1119,6 +1227,45 @@ button.generate-btn:hover {
 
 .modal-file-label:hover {
   background: #97b5ad;
+}
+.attached-files-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.file-chip {
+  display: flex;
+  align-items: center;
+  background-color: #eef3f8;
+  border: 1px solid #ccd7e0;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #333;
+}
+
+.file-name {
+  margin-right: 8px;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.remove-file-button {
+  background: none;
+  border: none;
+  color: #d33;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.remove-file-button:hover {
+  color: #a00;
 }
 
 /* Post button in modal */
@@ -1245,6 +1392,7 @@ button.generate-btn:hover {
 /* Main layout container */
 .post-layout {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 24px;
   padding: 5px;
@@ -1252,16 +1400,17 @@ button.generate-btn:hover {
 
 /* Sidebar styling */
 .user-sidebar {
-  width: 35%;
-  position: sticky;
+  width: 50%;
   top: 120px;
-  align-self: flex-start;
+  align-self: center;
 }
 
 /* Content area */
 .user-posts {
   flex: 1;
+  width: 50%;
   display: flex;
+  align-self: center;
   flex-direction: column;
   gap: 24px;
 }
@@ -1531,4 +1680,48 @@ button.generate-btn:hover {
   line-height: 28px;
   text-align: center;
   z-index: 2;
+}
+
+.user-card {
+  background: #90bdad;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-circle-large {
+  background: #078585;
+  color: white;
+  border: 2px solid #2fe601;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.user-text h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.user-text p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #292929;
 }
