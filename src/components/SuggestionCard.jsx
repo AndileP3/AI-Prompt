@@ -16,7 +16,7 @@ export default function SuggestionCard({ postId }) {
     const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
     if (likedPosts.includes(postId)) setLiked(true);
 
-    fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
+    fetch(`https://keailand.ct.ws/get_single_post.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -39,7 +39,7 @@ export default function SuggestionCard({ postId }) {
         }
       });
 
-    fetch(`http://localhost/AI/get_comments_count.php?post_id=${postId}`)
+    fetch(`https://keailand.ct.ws/get_comments_count.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -51,7 +51,7 @@ export default function SuggestionCard({ postId }) {
   const handleLike = (e) => {
     e.stopPropagation();
     if (!liked && storedUser) {
-      fetch(`http://localhost/AI/like_post.php`, {
+      fetch(`https://keailand.ct.ws/like_post.php`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,

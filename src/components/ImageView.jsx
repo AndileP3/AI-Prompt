@@ -18,7 +18,7 @@ export default function ImageView() {
   const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
   useEffect(() => {
-    fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
+    fetch(`https://keailand.ct.ws/get_single_post.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -26,7 +26,7 @@ export default function ImageView() {
         }
       });
 
-    fetch(`http://localhost/AI/get_comments.php?post_id=${postId}`)
+    fetch(`https://keailand.ct.ws/get_comments.php?post_id=${postId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -53,7 +53,7 @@ export default function ImageView() {
     setLoadingComment(true);
     setError(null);
 
-    fetch(`http://localhost/AI/add_comment.php`, {
+    fetch(`https://keailand.ct.ws/add_comment.php`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

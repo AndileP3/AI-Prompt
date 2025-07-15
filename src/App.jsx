@@ -23,7 +23,7 @@ export default function App() {
   useEffect(() => {
     const startTime = Date.now();
 
-    fetch("http://localhost/AI/get_posts.php")
+    fetch("https://keailand.ct.ws/get_posts.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
