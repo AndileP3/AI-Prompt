@@ -23,7 +23,7 @@ export default function App() {
   useEffect(() => {
     const startTime = Date.now();
 
-    fetch("https://keailand.ct.ws/get_posts.php")
+    fetch("https://keailand.bluenroll.co.za/get_posts.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

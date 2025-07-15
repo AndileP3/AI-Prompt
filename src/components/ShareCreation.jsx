@@ -24,7 +24,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
     files.forEach((file) => formData.append("image[]", file)); // Multiple images
 
     try {
-      const res = await fetch("https://keailand.ct.ws/post.php", {
+      const res = await fetch("https://keailand.bluenroll.co.za/post.php", {
         method: "POST",
         body: formData,
       });
@@ -41,7 +41,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
 
       if (data.success) {
         const imageUrls = (data.filenames || []).map(
-          (name) => `https://keailand.ct.ws/uploads/${name}`
+          (name) => `https://keailand.bluenroll.co.za/uploads/${name}`
         );
         setSubmissions([{ prompt, images: imageUrls }, ...submissions]);
         setPrompt("");

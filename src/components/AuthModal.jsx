@@ -20,8 +20,8 @@ export default function AuthModal({ showModal, setShowModal, setLoggedInUser }) 
     e.preventDefault();
     try {
       const endpoint = isSignUp
-        ? "https://keailand.ct.ws/save_user.php"
-        : "https://keailand.ct.ws/login.php";
+        ? "https://keailand.bluenroll.co.za/save_user.php"
+        : "https://keailand.bluenroll.co.za/login.php";
 
       const body = isSignUp
         ? { username, email, password }

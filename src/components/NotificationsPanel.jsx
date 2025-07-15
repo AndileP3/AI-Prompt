@@ -6,7 +6,7 @@ export default function NotificationsPanel() {
 
   useEffect(() => {
     if (storedUser) {
-      fetch(`https://keailand.ct.ws/get_notifications.php?user_id=${storedUser.user_id}`)
+      fetch(`https://keailand.bluenroll.co.za/get_notifications.php?user_id=${storedUser.user_id}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
