@@ -12,46 +12,49 @@ export default function SuggestionCard({ postId }) {
 
   const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-  useEffect(() => {
-    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
-    if (likedPosts.includes(postId)) setLiked(true);
+ useEffect(() => {
+  const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+  setLiked(likedPosts.includes(Number(postId))); // ✅ consistent type
 
-    fetch(`https://keailand.bluenroll.co.za/get_single_post.php?post_id=${postId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setPost(data.post);
-          setLikesCount(data.post.likes_count || 0);
+  // Fetch post details
+  fetch(`http://localhost/AI/get_single_post.php?post_id=${postId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setPost(data.post);
+        setLikesCount(data.post.likes_count || 0);
 
-          const createdAt = new Date(data.post.date);
-          const now = new Date();
-          const diffMs = now - createdAt;
-          const totalMinutes = Math.floor(diffMs / (1000 * 60));
-          const minutes = totalMinutes % 60;
-          const totalHours = Math.floor(totalMinutes / 60);
-          const hours = totalHours % 24;
-          const days = Math.floor(totalHours / 24);
-          let timeStr = "";
-          if (days > 0) timeStr += `${days}d${hours > 0 ? ` ${hours}h` : ""}`;
-          else if (totalHours > 0) timeStr += `${totalHours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
-          else timeStr += `${minutes}m`;
-          setTimeAgo(timeStr);
-        }
-      });
+        // Time ago logic
+        const createdAt = new Date(data.post.date);
+        const now = new Date();
+        const diffMs = now - createdAt;
+        const totalMinutes = Math.floor(diffMs / (1000 * 60));
+        const minutes = totalMinutes % 60;
+        const totalHours = Math.floor(totalMinutes / 60);
+        const hours = totalHours % 24;
+        const days = Math.floor(totalHours / 24);
+        let timeStr = "";
+        if (days > 0) timeStr += `${days}d${hours > 0 ? ` ${hours}h` : ""}`;
+        else if (totalHours > 0) timeStr += `${totalHours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
+        else timeStr += `${minutes}m`;
+        setTimeAgo(timeStr);
+      }
+    });
 
-    fetch(`https://keailand.bluenroll.co.za/get_comments_count.php?post_id=${postId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setCommentsCount(data.count);
-        }
-      });
-  }, [postId]);
+  // Fetch comment count
+  fetch(`http://localhost/AI/get_comments_count.php?post_id=${postId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setCommentsCount(data.count);
+      }
+    });
+}, [postId]);
 
   const handleLike = (e) => {
     e.stopPropagation();
     if (!liked && storedUser) {
-      fetch(`https://keailand.bluenroll.co.za/like_post.php`, {
+      fetch(`http://localhost/AI/like_post.php`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `post_id=${postId}&user_id=${storedUser.user_id}&username=${storedUser.username}`,
@@ -80,12 +83,16 @@ export default function SuggestionCard({ postId }) {
   }
 
   const { username, prompt, image } = post;
-let images = [];
-try {
-  images = Array.isArray(post.image) ? post.image : JSON.parse(post.image);
-} catch {
-  images = [];
-}
+const images = (() => {
+  try {
+    if (Array.isArray(post.image)) return post.image;
+    if (typeof post.image === "string") return JSON.parse(post.image);
+  } catch (err) {
+    console.error("Invalid image JSON:", post.image);
+  }
+  return [];
+})();
+
 
 
 try {

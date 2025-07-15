@@ -13,14 +13,14 @@ export default function Post() {
 
   useEffect(() => {
     // First, fetch the clicked post to get the user_id
-    fetch(`https://keailand.bluenroll.co.za/get_single_post.php?post_id=${id}`)
+    fetch(`http://localhost/AI/get_single_post.php?post_id=${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           const post = data.post;
 
           // Fetch all posts by this user
-          fetch(`https://keailand.bluenroll.co.za/get_posts_by_user.php?user_id=${post.user_id}`)
+          fetch(`http://localhost/AI/get_posts_by_user.php?user_id=${post.user_id}`)
             .then((res) => res.json())
             .then((userData) => {
               if (userData.success) {

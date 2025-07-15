@@ -21,10 +21,10 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
     const formData = new FormData();
     formData.append("message", prompt);
     formData.append("user_id", loggedInUser.user_id);
-    files.forEach((file) => formData.append("image[]", file)); // Multiple images
+    files.forEach((file) => formData.append("image[]", file)); // ✅ name must match PHP
 
     try {
-      const res = await fetch("https://keailand.bluenroll.co.za/post.php", {
+      const res = await fetch("http://localhost/AI/post.php", {
         method: "POST",
         body: formData,
       });
@@ -41,7 +41,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
 
       if (data.success) {
         const imageUrls = (data.filenames || []).map(
-          (name) => `https://keailand.bluenroll.co.za/uploads/${name}`
+          (name) => `http://localhost/AI/uploads/${name}`
         );
         setSubmissions([{ prompt, images: imageUrls }, ...submissions]);
         setPrompt("");
@@ -82,7 +82,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
                   🖼️ Photo(s)
                   <input
                     type="file"
-                    name="images"
+                    name="image[]"
                     accept="image/*"
                     multiple
                     onChange={(e) => {
@@ -92,31 +92,32 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
                     style={{ display: "none" }}
                   />
                   {files.length > 0 && (
-  <div className="attached-files-preview">
-    {files.map((file, index) => (
-      <div key={index} className="file-chip">
-        <span className="file-name">{file.name}</span>
-        <button
-          type="button"
-          className="remove-file-button"
-          onClick={() => {
-            setFiles(files.filter((_, i) => i !== index));
-          }}
-        >
-          ✕
-        </button>
-      </div>
-    ))}
-  </div>
-)}
-
+                    <div className="attached-files-preview">
+                      {files.map((file, index) => (
+                        <div key={index} className="file-chip">
+                          <span className="file-name">{file.name}</span>
+                          <button
+                            type="button"
+                            className="remove-file-button"
+                            onClick={() => {
+                              setFiles(files.filter((_, i) => i !== index));
+                            }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </label>
                 <button type="submit" className="modal-post-button">
                   Post
                 </button>
               </div>
             </form>
-            <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
+            <button className="modal-close" onClick={() => setShowModal(false)}>
+              ✕
+            </button>
           </div>
         </div>
       )}
@@ -126,6 +127,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
           <h4>✨ Your Post was Submitted</h4>
           {submissions.map((s, index) => (
             <div key={index} className="submission-card">
+              {s.prompt && <p className="submission-prompt">{s.prompt}</p>}
               {s.images?.length > 0 && (
                 <div className={`post-images-container images-${s.images.length}`}>
                   {s.images.map((img, idx) => (
@@ -133,7 +135,7 @@ export default function ShareCreation({ submissions, setSubmissions, loggedInUse
                   ))}
                 </div>
               )}
-              {s.prompt && <p className="submission-prompt">{s.prompt}</p>}
+              
             </div>
           ))}
         </div>
